@@ -1,0 +1,31 @@
+## Loading libraries
+
+```{r}
+devtools::load_all()
+```
+
+```{r}
+file <- "data/input_dataframe.tsv"
+out <- "input_df_1.tsv"
+clean_input_dataframe <- clean_df(file, out)
+nmf_df <- dimred(clean_input_dataframe, ndim = 2)
+
+# Iterated over different dimension numbers
+dims <- c(2, 3, 5, 10)
+nmf_dfs <- lapply(
+    dims, 
+    function(dim) dimred(clean_input_dataframe, ndim = dim)
+)
+# or
+#for (dim in dims) {
+#    dimred(clean_input_dataframe, ndim = dim)
+#}
+
+saveRDS(nmf_dfs, "nmf_dfs.rds")
+
+xx <- plotNMF(nmf_df)
+save_pheatmap_pdf(xx, "all_cnv_rare_coding.pdf")
+```
+
+
+
